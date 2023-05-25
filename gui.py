@@ -8,10 +8,12 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 
+from sentence_processing import sentence_tagging
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
 
-        self.sentences = [] 
+        self.sentences = []
 
         if MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -95,38 +97,45 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalSpacer_9 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.gridLayout_2.addItem(self.verticalSpacer_9, 12, 1, 1, 1)
+        self.gridLayout_2.addItem(self.verticalSpacer_9, 14, 1, 1, 1)
 
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.gridLayout_2.addItem(self.horizontalSpacer_3, 3, 0, 1, 1)
+        self.gridLayout_2.addItem(self.horizontalSpacer_3, 5, 0, 1, 1)
 
-        self.lineEdit = QLineEdit(self.gridLayoutWidget_2)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.fields_container = QWidget(self.gridLayoutWidget_2)
+        self.fields_container.setObjectName(u"fields_container")
 
-        self.gridLayout_2.addWidget(self.lineEdit, 4, 1, 1, 1)
+        self.fields_layout = QFormLayout()
+        self.fields_container.setLayout(self.fields_layout)
+
+        self.gridLayout_2.addWidget(self.fields_container, 6, 1, 1, 1)
 
         self.verticalSpacer_10 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.gridLayout_2.addItem(self.verticalSpacer_10, 10, 1, 1, 1)
+        self.gridLayout_2.addItem(self.verticalSpacer_10, 12, 1, 1, 1)
 
         self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.gridLayout_2.addItem(self.verticalSpacer_8, 6, 1, 1, 1)
+        self.gridLayout_2.addItem(self.verticalSpacer_8, 8, 1, 1, 1)
 
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.gridLayout_2.addItem(self.horizontalSpacer_4, 3, 3, 1, 1)
+        self.gridLayout_2.addItem(self.horizontalSpacer_4, 5, 3, 1, 1)
 
         self.pushButton_4 = QPushButton(self.gridLayoutWidget_2)
         self.pushButton_4.setObjectName(u"pushButton_4")
 
-        self.gridLayout_2.addWidget(self.pushButton_4, 11, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.pushButton_4, 13, 1, 1, 1)
 
         self.textBrowser = QListWidget(self.gridLayoutWidget_2)
         self.textBrowser.setObjectName(u"textBrowser")
+        self.gridLayout_2.addWidget(self.textBrowser, 10, 1, 1, 1)
 
-        self.gridLayout_2.addWidget(self.textBrowser, 8, 1, 1, 1)
+        self.pushButton_2 = QPushButton(self.gridLayoutWidget_2)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+
+        self.gridLayout_2.addWidget(self.pushButton_2, 11, 1, 1, 1)
 
         self.label_2 = QLabel(self.gridLayoutWidget_2)
         self.label_2.setObjectName(u"label_2")
@@ -134,7 +143,12 @@ class Ui_MainWindow(object):
         font1.setPointSize(12)
         self.label_2.setFont(font1)
 
-        self.gridLayout_2.addWidget(self.label_2, 3, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.label_2, 5, 1, 1, 1)
+
+        self.comboBox = QComboBox(self.gridLayoutWidget_2)
+        self.comboBox.setObjectName(u"comboBox")
+
+        self.gridLayout_2.addWidget(self.comboBox, 4, 1, 1, 1)
 
         self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
@@ -147,7 +161,7 @@ class Ui_MainWindow(object):
         self.pushButton_5 = QPushButton(self.gridLayoutWidget_2)
         self.pushButton_5.setObjectName(u"pushButton_5")
 
-        self.gridLayout_2.addWidget(self.pushButton_5, 5, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.pushButton_5, 7, 1, 1, 1)
 
         self.label_4 = QLabel(self.gridLayoutWidget_2)
         self.label_4.setObjectName(u"label_4")
@@ -160,12 +174,13 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName(u"label_3")
         self.label_3.setFont(font1)
 
-        self.gridLayout_2.addWidget(self.label_3, 7, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.label_3, 9, 1, 1, 1)
 
-        self.pushButton_2 = QPushButton(self.gridLayoutWidget_2)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.label_8 = QLabel(self.gridLayoutWidget_2)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setFont(font1)
 
-        self.gridLayout_2.addWidget(self.pushButton_2, 9, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.label_8, 3, 1, 1, 1)
 
         self.stackedWidget.addWidget(self.page_2)
         self.page_3 = QWidget()
@@ -207,6 +222,8 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.label_5, 1, 1, 1, 1)
 
         self.textBrowser_2 = QTextBrowser(self.gridLayoutWidget_3)
+
+        self.textBrowser_2.setObjectName(u"textBrowser_2")
         self.textBrowser_2.setObjectName(u"textBrowser_2")
 
         self.gridLayout_3.addWidget(self.textBrowser_2, 8, 1, 1, 1)
@@ -258,6 +275,13 @@ class Ui_MainWindow(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
 
+        self.comboBox.addItem("initially [fluents]")
+        self.comboBox.addItem("observable [fluents1] after [fluents2]")
+        self.comboBox.currentIndexChanged.connect(self.update_template)
+        self.comboBox.setCurrentIndex(-1)
+
+        self.empty_fields = []
+
         self.pushButton.clicked.connect(self.clicked_switch_to_add_world_definition)
         self.pushButton_5.clicked.connect(self.clicked_add_sentence)
         self.pushButton_2.clicked.connect(self.clicked_remove_sentence)
@@ -276,13 +300,6 @@ class Ui_MainWindow(object):
     def clicked_exit_app(self):
         app.quit()
 
-    def clicked_add_sentence(self):
-        sentence = self.lineEdit.text()
-        if sentence:
-            self.sentences.append(sentence)
-            self.textBrowser.addItem(sentence)
-            self.lineEdit.clear()
-
     def clicked_remove_sentence(self):
         selected_item = self.textBrowser.currentItem()
         if selected_item:
@@ -298,23 +315,60 @@ class Ui_MainWindow(object):
         self.textBrowser_2.append(f"{self.lineEdit_2.text()}: {output_query}")
         self.lineEdit_2.clear()
 
+    def update_template(self, index):
+        # Usunięcie istniejących pól edycyjnych
+        while self.fields_layout.rowCount() > 0:
+            self.fields_layout.removeRow(0)
+
+        selected_template = self.comboBox.currentText()
+        
+        if selected_template == "initially [fluents]":
+            self.field_names = ["fluents"]
+            
+        elif selected_template == "observable [fluents1] after [fluents2]":
+            self.field_names = ["fluents1", "fluents2"]
+
+
+        self.fields = []
+        for i, field_name in enumerate(self.field_names):
+            self.fields.append(QLineEdit())
+            self.fields_layout.addRow(field_name, self.fields[i])
+        # ...
+
+    def clicked_add_sentence(self):
+        combined_text = self.comboBox.currentText()
+
+        for field, field_name in zip(self.fields, self.field_names):
+            field_value = field.text()
+            
+            combined_text = combined_text.replace(f"[{field_name}]", field_value)
+
+        self.textBrowser.addItem(combined_text)
+
+        while self.fields_layout.rowCount() > 0:
+            self.fields_layout.removeRow(0)
+        self.comboBox.setCurrentIndex(-1)
+
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Knowledge reasoning and representation ", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Add world definition", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Add word definition", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"Finish", None))
+        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Add new sentence", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"OK", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Definition of world", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Added sentences", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Query", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Choose template:", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Add new sentence", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Query", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"Close app", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Query result", None))
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"OK", None))
+
+
 
 
 if __name__ == "__main__":
