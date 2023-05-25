@@ -347,7 +347,10 @@ class Ui_MainWindow(object):
 
         while self.fields_layout.rowCount() > 0:
             self.fields_layout.removeRow(0)
+
         self.comboBox.setCurrentIndex(-1)
+
+        self.sentences.append(combined_text)
 
 
     def retranslateUi(self, MainWindow):
