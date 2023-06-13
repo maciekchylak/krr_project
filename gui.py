@@ -8,9 +8,6 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 
-from sentence_processing import sentence_tagging
-
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
 
