@@ -8,8 +8,6 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 
-from sentence_processing import sentence_tagging
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -279,16 +277,48 @@ class Ui_MainWindow(object):
         self.stackedWidget.setCurrentIndex(0)
         QMetaObject.connectSlotsByName(MainWindow)
 
+        #Value statement
+        ##1
+        self.comboBox.addItem("[fluent1] [linking] [fluent2] after [action1] [action2]")
+        ##2
+        self.comboBox.addItem("observable [fluent1] [linking] [fluent2] after [action1] [action2]")
+        ##3
+        self.comboBox.addItem("initially [fluent]")
 
-        self.comboBox.addItem("initially [fluents]")
-        self.comboBox.addItem("observable [fluents1] after [fluents2]")
+        #Effect statement
+        ##1
+        self.comboBox.addItem("[action] by [agent] couses [fluent1] [linking] [fluent2] if [fluent3] [linking2] [fluent4]")
+        ##2
+        self.comboBox.addItem("[action] by [agent] causes [fluent1] [linking] [fluent2]")
+        ##3
+        self.comboBox.addItem("impossible [action] by [agent] if [fluent1] [linking] [fluent2]")
+        ##4
+        self.comboBox.addItem("impossible [action] if [fluent1] [linking] [fluent2]")
+
+        #Release statement
+        ##1
+        self.comboBox.addItem("[action] by [agent] releases [fluent1] [linking1] [fluent2] if [fluent3] [linking2] [fluent4]")
+        ##2
+        self.comboBox.addItem("[action] by [agent] releases [fluent1] [linking1] [fluent2]")
+        #Constraint statement
+        ##1
+        self.comboBox.addItem("always [fluent1] [linking1] [fluent2]")
+
+        # self.comboBox.addItem("[formula] after [action,action...]")
         self.comboBox.currentIndexChanged.connect(self.update_template)
         self.comboBox.setCurrentIndex(-1)
         self.empty_fields = []
         self.field_names = []
 
-        self.comboBox_2.addItem("realizable [actions]")
-        self.comboBox_2.addItem("executable [actions] [costam]")
+        #Value query
+        self.comboBox_2.addItem("necessary [fluent1] [linking1] [fluent2] after")
+        self.comboBox_2.addItem("possibility [fluent1] [linking1] [fluent2] after")
+        #Realizability query
+        self.comboBox_2.addItem("program realizable always")
+        self.comboBox_2.addItem("program realizable ever from")
+        #Activity query
+        self.comboBox_2.addItem("active [agent] in program ")
+ 
         self.comboBox_2.currentIndexChanged.connect(self.update_template_2)
         self.comboBox_2.setCurrentIndex(-1)
         self.empty_fields_2 = []
@@ -332,11 +362,49 @@ class Ui_MainWindow(object):
 
         selected_template = self.comboBox.currentText()
         
-        if selected_template == "initially [fluents]":
-            self.field_names = ["fluents"]
+        #Value statement
+        ##1
+        if selected_template == "[fluent1] [linking] [fluent2] after [action1] [action2]":
+            self.field_names = ["fluent1","linking","fluent2", "action1","action2"]
+        ##2
+        elif selected_template == "observable [fluent1] [linking] [fluent2] after [action1] [action2]":
+            self.field_names = ["fluent1","fluent2","linking" ,"action1","action2"]
+        ##3
+        elif selected_template == "initially [fluent]":
+            self.field_names = ["fluent"]
             
-        elif selected_template == "observable [fluents1] after [fluents2]":
-            self.field_names = ["fluents1", "fluents2"]
+        #Effect statement
+        ##1
+        elif selected_template == "[action] by [agent] couses [fluent1] [linking] [fluent2] if [fluent3] [linking2] [fluent4]":
+            self.field_names = ["action","agent","fluent1","linking","fluent2","fluent3","linking2","fluent4"]
+        ##2
+        elif selected_template == "[action] by [agent] causes [fluent1] [linking] [fluent2]":
+            self.field_names = ["action","agent","fluent1","linking","fluent2"]
+
+        ##3
+        elif selected_template == "impossible [action] by [agent] if [fluent1] [linking] [fluent2]":
+            self.field_names = ["action","agent","fluent1","linking","fluent2"]
+
+        ##4
+        elif selected_template == "impossible [action] if [fluent1] [linking] [fluent2]":
+            self.field_names = ["action","fluent1","linking","fluent2"]
+
+        #Release statement
+        ##1
+        elif selected_template == "[action] by [agent] releases [fluent1] [linking1] [fluent2] if [fluent3] [linking2] [fluent4]":
+            self.field_names = ["action","agent","fluent1","linking1","fluent2","fluent3","linking2","fluent4"]
+        ##2
+        elif selected_template == "[action] by [agent] releases [fluent1] [linking1] [fluent2]":
+            self.field_names = ["action","agent","fluent1","linking1","fluent2"]
+        #Constraint statement
+        ##1
+        elif selected_template == "always [fluent1] [linking1] [fluent2]":
+            self.field_names = ["fluent1","linking1","fluent2"]
+
+
+
+
+
 
 
         self.fields = []
@@ -360,6 +428,7 @@ class Ui_MainWindow(object):
         self.comboBox.setCurrentIndex(-1)
 
         self.sentences.append(combined_text)
+        print(self.sentences)
 
 
     def update_template_2(self, index):
@@ -368,12 +437,22 @@ class Ui_MainWindow(object):
             self.fields_layout_2.removeRow(0)
 
         selected_template = self.comboBox_2.currentText()
-        
-        if selected_template == "realizable [actions]":
-            self.field_names_2 = ["actions"]
-            
-        elif selected_template == "executable [actions] [costam]":
-            self.field_names_2 = ["actions", "costam"]
+
+        #Value query
+        if selected_template == "necessary [fluent1] [linking1] [fluent2] after":
+            self.field_names_2 = ["fluent1","linking1","fluent2"]
+
+        elif selected_template == "possibility [fluent1] [linking1] [fluent2] after":
+            self.field_names_2 = ["fluent1","linking1","fluent2"]
+        #Realizability query
+        #elif selected_template == "program realizable always from [fluent1] [linking1] [fluent2]":
+            #self.field_names_2 = ["fluent1","linking1","fluent2"]
+
+        #elif selected_template == "program realizable ever from [fluent1] [linking1] [fluent2]":
+            #self.field_names_2 = ["fluent1","linking1","fluent2"]
+        #Activity query
+        elif selected_template == "active [agent] in program from [fluent1] [linking1] [fluent2]":
+             self.field_names_2 = ["agent"]
 
         self.fields_2 = []
         for i, field_name in enumerate(self.field_names_2):
