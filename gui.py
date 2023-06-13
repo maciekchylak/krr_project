@@ -8,7 +8,10 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c22d2aa54a5dda798156270634c0e691de40c621
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
 
