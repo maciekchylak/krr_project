@@ -98,21 +98,61 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 # query = ["active zlodziej in program"] #Ture
 
 # maciek1
-# fluents = ["loaded", "walking", "alive"]
+# fluents = ["open", "hasCard"]
+# sequences = [
+#             "initially !open",
+#             "insertCard by bill causes open",
+#             "impossible insertCard by bill if !hasCard"
+# ]
+# program = ["bill insertCard"]
+# query = ["necessary open after (bill insertCard)"] #False
+
+# program = ["bill insertCard"]
+# query = ["realizable always"] #False
+
+# #maciek2
+# fluents = ["loaded", "alive"]
+# sequences = [
+#             "initially alive",
+#             "load by bill causes loaded",
+#             "shoot by bill causes !loaded",
+#             "shoot by bill causes !alive if loaded"
+# ]
+# # program = ["bill load", "bill shoot"]
+# # query = ["program realizable always"] # True
+
+# program = ["bill load", "bill shoot"]
+# query = ["necessary !alive after program"] #True
+
+# maciek3
+# fluents = ["loaded", "alive", "walking"]
 # sequences = [
 #             "initially loaded and walking",
-#             "always walking and alive",
-#             "Load by bill causes loaded",
-#             "Shoot by bill causes !loaded",
-#             "Shoot by bill causes !alive if loaded"
+#             "always !walking or alive",
+#             "load by bill causes loaded",
+#             "shoot by bill causes !loaded",
+#             "shoot by bill causes !alive if loaded"
 # ]
 # program = ["bill shoot"]
-# query = ["necessary walking after"] #False
+# query = ["necessary walking after program"] #True
+
+# program = ["bill shoot"]
+# query = ["realizable always"] #True
 
 
-program = ["bill shoot"]
-query = ["realizable always"] #True 
-
+# maciek4
+# fluents = ["loaded", "alive"]
+# sequences = [
+#             "initially !loaded and alive",
+#             "load by bill causes loaded",
+#             "shoot by bill causes !loaded",
+#             "shoot by bill causes !alive if loaded",
+#             "spin by bill releases !loaded if loaded"
+]
+# program = ["bill load", "bill shoot", "bill load", "bill spin"]
+# query = ["possibly !loaded after program"] # True
+# program = ["bill load", "bill spin"]
+# query = ["possibly alive after program"] # True
 
 historical_actions =[]
 
