@@ -65,17 +65,17 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 # query = ["possibly p and q after program"] #False
 
 
-# #seba 1
-# fluents = ["drzwi_otwarte", "pieniadze","blokada_aktywna"]
-# sequences = [ "initially pieniadze",
-#               "initially drzwi_otwarte",
-#               "initially !blokada_aktywna",
-#               "zamknij by domownik causes !drzwi_otwarte if drzwi_otwarte",
-#               "zablokuj by domownik causes blokada_aktywna if !blokada_aktywna and !drzwi_otwarte",
-#               "wlam by zlodziej releases !pieniadze if !blokada_aktywna",
-#               "impossible zablokuj by domownik if drzwi_otwarte",
-#               "impossible zamknij by domownik if blokada_aktywna"
-#               ]
+#seba 1
+fluents = ["drzwi_otwarte", "pieniadze","blokada_aktywna"]
+sequences = [ "initially pieniadze",
+              "initially drzwi_otwarte",
+              "initially !blokada_aktywna",
+              "zamknij by domownik causes !drzwi_otwarte if drzwi_otwarte",
+              "zablokuj by domownik causes blokada_aktywna if !blokada_aktywna and !drzwi_otwarte",
+              "wlam by zlodziej releases !pieniadze if !blokada_aktywna",
+              "impossible zablokuj by domownik if drzwi_otwarte",
+              "impossible zamknij by domownik if blokada_aktywna"
+              ]
 # program = ["domownik zamknij", "domownik zablokuj", "zlodziej wlam"]
 # query = ["possibly pieniadze after"] #True
 
@@ -85,6 +85,7 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 # program = ["domownik zamknij", "zlodziej wlam"]
 # query = ["active zlodziej in program"] #False
 
+# fluents = ["drzwi_otwarte", "pieniadze","blokada_aktywna"]
 # sequences = [ "initially pieniadze",
 #               "initially drzwi_otwarte",
 #               "initially !blokada_aktywna",
@@ -97,62 +98,167 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 # program = ["domownik zamknij", "zlodziej wlam"]
 # query = ["active zlodziej in program"] #Ture
 
-# maciek1
-# fluents = ["open", "hasCard"]
-# sequences = [
-#             "initially !open",
-#             "insertCard by bill causes open",
-#             "impossible insertCard by bill if !hasCard"
-# ]
+#maciek1
+fluents = ["open", "hasCard"]
+sequences = [
+            "initially !open",
+            "insertCard by bill causes open",
+            "impossible insertCard by bill if !hasCard"
+]
 # program = ["bill insertCard"]
-# query = ["necessary open after (bill insertCard)"] #False
+# query = ["necessary open after program"] #False
+
+# program = ["bill insertCard"]
+# query = ["possibly open after program"] #False
 
 # program = ["bill insertCard"]
 # query = ["realizable always"] #False
 
-# #maciek2
-# fluents = ["loaded", "alive"]
-# sequences = [
-#             "initially alive",
-#             "load by bill causes loaded",
-#             "shoot by bill causes !loaded",
-#             "shoot by bill causes !alive if loaded"
-# ]
-# # program = ["bill load", "bill shoot"]
-# # query = ["program realizable always"] # True
+#maciek2
+fluents = ["loaded", "alive"]
+sequences = [
+            "initially alive",
+            "load by bill causes loaded",
+            "shoot by bill causes !loaded",
+            "shoot by bill causes !alive if loaded"
+]
+
+# program = ["bill load", "bill shoot"]
+# query = ["program realizable always"] # True
 
 # program = ["bill load", "bill shoot"]
 # query = ["necessary !alive after program"] #True
 
-# maciek3
-# fluents = ["loaded", "alive", "walking"]
-# sequences = [
-#             "initially loaded and walking",
-#             "always !walking or alive",
-#             "load by bill causes loaded",
-#             "shoot by bill causes !loaded",
-#             "shoot by bill causes !alive if loaded"
-# ]
+#maciek3
+fluents = ["loaded", "alive", "walking"]
+sequences = [
+            "initially loaded and walking",
+            "always !walking or alive",
+            "load by bill causes loaded",
+            "shoot by bill causes !loaded",
+            "shoot by bill causes !alive if loaded"
+]
 # program = ["bill shoot"]
-# query = ["necessary walking after program"] #True
+# query = ["necessary walking after program"] #False
 
 # program = ["bill shoot"]
-# query = ["realizable always"] #True
+# query = ["realizable always"] # True (daje false)TODO wynikanie 
 
 
 # maciek4
-# fluents = ["loaded", "alive"]
-# sequences = [
-#             "initially !loaded and alive",
-#             "load by bill causes loaded",
-#             "shoot by bill causes !loaded",
-#             "shoot by bill causes !alive if loaded",
-#             "spin by bill releases !loaded if loaded"
+fluents = ["loaded", "alive"]
+sequences = [
+            "initially !loaded and alive",
+            "load by bill causes loaded",
+            "shoot by bill causes !loaded",
+            "shoot by bill causes !alive if loaded",
+            "spin by bill releases !loaded if loaded"
 ]
 # program = ["bill load", "bill shoot", "bill load", "bill spin"]
-# query = ["possibly !loaded after program"] # True
+# query = ["possibly !loaded after program"] #True
 # program = ["bill load", "bill spin"]
-# query = ["possibly alive after program"] # True
+# query = ["possibly alive after program"] #True
+
+
+
+#maciek5
+fluents = ["open", "hasCard"]
+sequences = [
+            "initially !open and hasCard",
+            "insertCard by bill causes open",
+            "impossible insertCard by bill if !hasCard"
+]
+# program = ["bill insertCard"]
+# query = ["necessary open after"] # True
+
+# program = ["bill insertCard"]
+# query = ["realizable always"] ## True
+
+
+#maciek6
+# fluents = ["open", "hasCard"]
+# sequences = [
+#             "initially !open",
+#             "insertCard by bill causes open",
+#             "impossible insertCard by bill if !open"
+# ]
+# program = ["bill insertCard"]
+# query = ["possibly open after "] # False
+
+
+# maciek7
+# fluents = ["ksiezniczka_uratowana", "miecz_zdobyty", "smok_zabity", "rycerz_zabity"]
+# sequences = [
+#             "initially !miecz_zdobyty and !smok_zabity",
+#             "initially !ksiezniczka_uratowana and !rycerz_zabity",
+#             "podnies_miecz by rycerz causes miecz_zdobyty",
+#             "zaatakuj_smok by rycerz releases smok_zabity if miecz_zdobyty and !rycerz_zabity",
+#             "zaatakuj_smok by rycerz releases ksiezniczka_uratowana if miecz_zdobyty and !rycerz_zabity",
+#             "zaatakuj_rycerz by smok causes rycerz_zabity if !smok_zabity",
+#             "impossible insertCard by bill if !open"
+# ]
+# program = ["rycerz podnies_miecz", "rycerz zaatakuj_smok"]
+# query = ["active smok in program"] # False
+
+# program = ["smok zaatakuj_rycerz", "rycerz zaatakuj_smok"]
+# query = ["possibly smok_zabity after program"] # False
+
+
+
+# maciek8
+# fluents = ["kwiaty_kwitna", "konewka_pelna"]
+# sequences = [
+#             "initially !konewka_pelna",
+#             "impossible podlewanie by ogrodnik if !konewka_pelna",
+#             "podlewanie by ogrodnik causes kwiaty_kwitna if konewka_pelna",
+#             "napelnianie by ogrodnik causes konewka_pelna if !konewka_pelna",
+# ]
+# program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
+# query = ["active ogrodnik in program"] # False
+
+# program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
+# query = ["realizable always"] # True TODO !dawid to check  if true response is ok 
+
+
+# # maciek9
+fluents = ["tank_full", "car_running", "tom_has_money"]
+sequences = [
+            "initially tom_has_money",
+            "turn_on_car by Tom causes car_running if tank_full",
+            "refuel_car by Tom causes tank_full and !tom_has_money if tom_has_money",
+            "steal_money by Thief releases !tom_has_money",
+]
+# program = ["Tom refuel_car", "Tom turn_on_car"]
+# query = ["necessary !tom_has_money and car_running after program"] # True
+
+# program = ["Tom turn_on_car", "Thief steal_money"]
+# query = ["possibly tom_has_money after program"] # True  TODO check (poprawione)
+
+# program = ["Tom turn_on_car", "Thief steal_money"]
+# query = ["necessary tom_has_money after program"] # False
+
+# program = ["Tom refuel_car", "Thief steal_money"]
+# query = ["realizable always"] # False (daje true) TODO check (chyba ok bo nie ma zadnego impossible w sequences)
+
+
+
+# # maciek9 test
+# fluents = ["tom_has_money"]
+# sequences = [
+#             "initially tom_has_money",
+#             "steal_money by Thief releases !tom_has_money",
+# ]
+# program = ["Tom refuel_car", "Tom turn_on_car"]
+# query = ["necessary !tom_has_money and car_running after program"] # True
+
+# program = ["Thief steal_money"]
+# query = ["possibly tom_has_money after program"] # True  TODO check 
+
+# program = ["Tom turn_on_car", "Thief steal_money"]
+# query = ["necessary tom_has_money after program"] # False
+
+# program = ["Tom refuel_car", "Thief steal_money"]
+# query = ["realizable always"] # False TODO check 
 
 historical_actions =[]
 
@@ -369,14 +475,19 @@ print(f"actions_conditions_impossible :{actions_conditions_impossible}")
 print(f"actions_conditions_releases :{actions_conditions_releases}")
 print(f"always :{statments['always']}")
 
+print(f"fluents :{fluents}")
 
 
 
-states[0] = copy.deepcopy(statments["initial_fluents"])
+
+initial_fluents = copy.deepcopy(statments["initial_fluents"])
 for f in fluents:
     new_statements = []
-    for l in statments["initial_fluents"]:
+    
+    for l in initial_fluents:
+        #print(f"l {l}")
         if "!" + f in l or f in l:
+            #print(f"in if 1 ")
             new_statements.append(l)
             continue
         else:
@@ -387,7 +498,9 @@ for f in fluents:
             l_copy_2.append("!" + f)
             new_statements.append(l_copy_2)
     new_statements = [list(x) for x in set(tuple(sorted(x)) for x in new_statements)]        
-    states[0] = new_statements
+
+    initial_fluents = new_statements
+states[0] = initial_fluents
 
 print(f"states0 {states}")
 
@@ -435,6 +548,7 @@ if True:
                             if boolean:
                                 break                         
                         if  boolean==True:
+                            return False
                             continue                             
                     #causes
                     states_or =[]
@@ -517,8 +631,8 @@ if True:
                                         break
                                 if boolean:                   
                                     states[i+1].append(state_copied)
-                        else:
-                            states[i+1].append(state)
+                        #else:
+                        states[i+1].append(state)
                     if boolean_always:
                         #states[i+1].append(state)
                         for state_or in states_or:
@@ -645,6 +759,7 @@ if True:
                                 states_model[i+1].append(state)
                         #release
                         if (agent, action) in actions_conditions_releases.keys():
+                            print(f"releases (agent, action) {(agent, action)}")
                             for posibility in actions_conditions_releases[(agent,action)][0]:
                                 boolean = True
                                 for fluent in posibility:
@@ -666,6 +781,8 @@ if True:
                                             state_copied.remove(postcondtion[1:])
                                             state_copied.append(postcondtion)
                                         else:
+                                            print(f"postcondtion {postcondtion}")
+                                            print(f"state_copied {state_copied}")
                                             state_copied.remove("!"+postcondtion)
                                             state_copied.append(postcondtion)
                                     #always        
@@ -679,8 +796,9 @@ if True:
                                             break
                                     if boolean:                   
                                         states_model[i+1].append(state_copied)
-                            else:
-                                states_model[i+1].append(state)
+                                        # states_model[i+1].append(state) # TODO
+                            # else:
+                            states_model[i+1].append(state)
                         if boolean_always:                
                             # states_model[i+1].append(state) 
                             for state_or in states_or:
@@ -713,29 +831,75 @@ if True:
             print(f"states_models {states_models}")
 
             for states_model in states_models:
+                print(f"states_model[len(states_model)-1] {states_model[len(states_model)-1]}")
                 if len(states_model[len(states_model)-1]) == 0:
                     return False 
+                state_possibly_true_tab =[]
                 for state in states_model[len(states_model)-1]:
+                    print(f"sate {state}")
                     formula = query[0].split("possibly ")[1].split(" after")[0]
                     formula2 = None
                     if "or" in formula:
                         formula, formula2 = formula.split(" or ")
                         if formula in state or formula2 in state:
-                            break
+                            # break
+                            state_possibly_true_tab.append(True)
                     elif "and" in formula:
                         formula, formula2 = formula.split(" and ")
                         if formula in state and formula2 in state:
-                            break
+                            #break
+                            state_possibly_true_tab.append(True)
+                    # else:
+                    #     if formula in state:
+                    elif formula in state:
+                            # break
+                            state_possibly_true_tab.append(True)
+                    #return False  
                     else:
-                        if formula in state:
-                            break
-                    return False    
+                        state_possibly_true_tab.append(False)
+                print(f"state_possibly_true_tab {state_possibly_true_tab}")
+                if True in state_possibly_true_tab:
+                    continue
+                else:
+                    return False        
             return True
+        
+            #         for iter,states_model in enumerate(states_models):
+            #     print(f"iter {iter}")
+            #     print(f"states_model[len(states_model)-1] {states_model[len(states_model)-1]}")
+            #     if len(states_model[len(states_model)-1]) == 0:
+            #         return False 
+            #     states_combine = []
+            #     for state in states_model[len(states_model)-1]:
+            #         states_combine += state
+            #     print(f"states_combine {states_combine}")    
+                
+            #     formula = query[0].split("possibly ")[1].split(" after")[0]
+            #     formula2 = None
+            #     if "or" in formula:
+            #         formula, formula2 = formula.split(" or ")
+            #         if formula in state or formula2 in state:
+            #             break
+            #     elif "and" in formula:
+            #         formula, formula2 = formula.split(" and ")
+            #         if formula in state and formula2 in state:
+            #             break
+            #     else:
+            #         if formula in state:
+            #             break
+            #     return False    
+            # return True        
 
                                 
                                 
         def activity_query():
             formula_agent = query[0].split("active ")[1].split(" in ")[0]
+            boolean_agent = False
+            for (agent, action) in parsed_program:
+                if agent == formula_agent:
+                    boolean_agent=True
+            if not  boolean_agent:
+                return False        
             for i,(agent, action) in enumerate(parsed_program):
                 states[i+1]=[]
                 historical_actions.append(action)  
@@ -851,8 +1015,8 @@ if True:
                                         break
                                 if boolean:                   
                                     states[i+1].append(state_copied)
-                        else:
-                            states[i+1].append(state)
+                        # else:
+                        states[i+1].append(state)
                     
                                         
                 states[i+1] = [list(x) for x in set(tuple(x) for x in states[i+1])]
@@ -877,6 +1041,7 @@ if True:
                                         state_copied.append(fluent)
                                         state_new.append(state_copied)
                         states[i+1] = state_new
+
             return True            
                         
 
@@ -986,8 +1151,8 @@ if True:
                                 else:
                                     return False
 
-                        else:
-                            states[i+1].append(state)   
+                        # else:
+                        states[i+1].append(state)   
                     if boolean_always:             
                         # states[i+1].append(state) 
                         for state_or in states_or:
@@ -1123,8 +1288,8 @@ if True:
                                             break
                                     if boolean:                   
                                         states_model[i+1].append(state_copied)
-                            else:
-                                states_model[i+1].append(state)
+                            # else:
+                            states_model[i+1].append(state)
                         if boolean_always:
                             # states_model[i+1].append(state) 
                             for state_or in states_or:

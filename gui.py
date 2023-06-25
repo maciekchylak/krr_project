@@ -868,11 +868,14 @@ class Ui_MainWindow(object):
 
 
 
-        states[0] = copy.deepcopy(statments["initial_fluents"])
+        initial_fluents = copy.deepcopy(statments["initial_fluents"])
         for f in fluents:
             new_statements = []
-            for l in statments["initial_fluents"]:
+            
+            for l in initial_fluents:
+                #print(f"l {l}")
                 if "!" + f in l or f in l:
+                    #print(f"in if 1 ")
                     new_statements.append(l)
                     continue
                 else:
@@ -883,7 +886,9 @@ class Ui_MainWindow(object):
                     l_copy_2.append("!" + f)
                     new_statements.append(l_copy_2)
             new_statements = [list(x) for x in set(tuple(sorted(x)) for x in new_statements)]        
-            states[0] = new_statements
+
+            initial_fluents = new_statements
+        states[0] = initial_fluents
 
         print(f"states0 {states}")
 
@@ -1209,6 +1214,7 @@ class Ui_MainWindow(object):
                             if boolean:
                                 break                         
                         if  boolean==True:
+                            return False
                             continue                             
                     #causes
                     states_or =[]
@@ -1291,8 +1297,8 @@ class Ui_MainWindow(object):
                                         break
                                 if boolean:                   
                                     states[i+1].append(state_copied)
-                        else:
-                            states[i+1].append(state)
+                        #else:
+                        states[i+1].append(state)
                     if boolean_always:
                         #states[i+1].append(state)
                         for state_or in states_or:
@@ -1419,6 +1425,7 @@ class Ui_MainWindow(object):
                                 states_model[i+1].append(state)
                         #release
                         if (agent, action) in actions_conditions_releases.keys():
+                            print(f"releases (agent, action) {(agent, action)}")
                             for posibility in actions_conditions_releases[(agent,action)][0]:
                                 boolean = True
                                 for fluent in posibility:
@@ -1440,6 +1447,8 @@ class Ui_MainWindow(object):
                                             state_copied.remove(postcondtion[1:])
                                             state_copied.append(postcondtion)
                                         else:
+                                            print(f"postcondtion {postcondtion}")
+                                            print(f"state_copied {state_copied}")
                                             state_copied.remove("!"+postcondtion)
                                             state_copied.append(postcondtion)
                                     #always        
@@ -1453,8 +1462,9 @@ class Ui_MainWindow(object):
                                             break
                                     if boolean:                   
                                         states_model[i+1].append(state_copied)
-                            else:
-                                states_model[i+1].append(state)
+                                        # states_model[i+1].append(state) # TODO
+                            # else:
+                            states_model[i+1].append(state)
                         if boolean_always:                
                             # states_model[i+1].append(state) 
                             for state_or in states_or:
@@ -1487,29 +1497,75 @@ class Ui_MainWindow(object):
             print(f"states_models {states_models}")
 
             for states_model in states_models:
+                print(f"states_model[len(states_model)-1] {states_model[len(states_model)-1]}")
                 if len(states_model[len(states_model)-1]) == 0:
                     return False 
+                state_possibly_true_tab =[]
                 for state in states_model[len(states_model)-1]:
+                    print(f"sate {state}")
                     formula = query[0].split("possibly ")[1].split(" after")[0]
                     formula2 = None
                     if "or" in formula:
                         formula, formula2 = formula.split(" or ")
                         if formula in state or formula2 in state:
-                            break
+                            # break
+                            state_possibly_true_tab.append(True)
                     elif "and" in formula:
                         formula, formula2 = formula.split(" and ")
                         if formula in state and formula2 in state:
-                            break
+                            #break
+                            state_possibly_true_tab.append(True)
+                    # else:
+                    #     if formula in state:
+                    elif formula in state:
+                            # break
+                            state_possibly_true_tab.append(True)
+                    #return False  
                     else:
-                        if formula in state:
-                            break
-                    return False    
+                        state_possibly_true_tab.append(False)
+                print(f"state_possibly_true_tab {state_possibly_true_tab}")
+                if True in state_possibly_true_tab:
+                    continue
+                else:
+                    return False        
             return True
+        
+            #         for iter,states_model in enumerate(states_models):
+            #     print(f"iter {iter}")
+            #     print(f"states_model[len(states_model)-1] {states_model[len(states_model)-1]}")
+            #     if len(states_model[len(states_model)-1]) == 0:
+            #         return False 
+            #     states_combine = []
+            #     for state in states_model[len(states_model)-1]:
+            #         states_combine += state
+            #     print(f"states_combine {states_combine}")    
+                
+            #     formula = query[0].split("possibly ")[1].split(" after")[0]
+            #     formula2 = None
+            #     if "or" in formula:
+            #         formula, formula2 = formula.split(" or ")
+            #         if formula in state or formula2 in state:
+            #             break
+            #     elif "and" in formula:
+            #         formula, formula2 = formula.split(" and ")
+            #         if formula in state and formula2 in state:
+            #             break
+            #     else:
+            #         if formula in state:
+            #             break
+            #     return False    
+            # return True        
 
                                 
                                 
         def activity_query():
             formula_agent = query[0].split("active ")[1].split(" in ")[0]
+            boolean_agent = False
+            for (agent, action) in parsed_program:
+                if agent == formula_agent:
+                    boolean_agent=True
+            if not  boolean_agent:
+                return False        
             for i,(agent, action) in enumerate(parsed_program):
                 states[i+1]=[]
                 historical_actions.append(action)  
@@ -1625,8 +1681,8 @@ class Ui_MainWindow(object):
                                         break
                                 if boolean:                   
                                     states[i+1].append(state_copied)
-                        else:
-                            states[i+1].append(state)
+                        # else:
+                        states[i+1].append(state)
                     
                                         
                 states[i+1] = [list(x) for x in set(tuple(x) for x in states[i+1])]
@@ -1651,6 +1707,7 @@ class Ui_MainWindow(object):
                                         state_copied.append(fluent)
                                         state_new.append(state_copied)
                         states[i+1] = state_new
+
             return True            
                         
 
@@ -1760,8 +1817,8 @@ class Ui_MainWindow(object):
                                 else:
                                     return False
 
-                        else:
-                            states[i+1].append(state)   
+                        # else:
+                        states[i+1].append(state)   
                     if boolean_always:             
                         # states[i+1].append(state) 
                         for state_or in states_or:
@@ -1897,8 +1954,8 @@ class Ui_MainWindow(object):
                                             break
                                     if boolean:                   
                                         states_model[i+1].append(state_copied)
-                            else:
-                                states_model[i+1].append(state)
+                            # else:
+                            states_model[i+1].append(state)
                         if boolean_always:
                             # states_model[i+1].append(state) 
                             for state_or in states_or:
@@ -1933,7 +1990,7 @@ class Ui_MainWindow(object):
                 state_tab = states_model[len(states_model)-1]
                 if len(state_tab)==0:
                     return False
-            return True                  
+            return True                    
                             
 
         if "active" in query[-1]:
