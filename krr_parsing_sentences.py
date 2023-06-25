@@ -66,16 +66,16 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 
 
 #seba 1
-fluents = ["drzwi_otwarte", "pieniadze","blokada_aktywna"]
-sequences = [ "initially pieniadze",
-              "initially drzwi_otwarte",
-              "initially !blokada_aktywna",
-              "zamknij by domownik causes !drzwi_otwarte if drzwi_otwarte",
-              "zablokuj by domownik causes blokada_aktywna if !blokada_aktywna and !drzwi_otwarte",
-              "wlam by zlodziej releases !pieniadze if !blokada_aktywna",
-              "impossible zablokuj by domownik if drzwi_otwarte",
-              "impossible zamknij by domownik if blokada_aktywna"
-              ]
+# fluents = ["drzwi_otwarte", "pieniadze","blokada_aktywna"]
+# sequences = [ "initially pieniadze",
+#               "initially drzwi_otwarte",
+#               "initially !blokada_aktywna",
+#               "zamknij by domownik causes !drzwi_otwarte if drzwi_otwarte",
+#               "zablokuj by domownik causes blokada_aktywna if !blokada_aktywna and !drzwi_otwarte",
+#               "wlam by zlodziej releases !pieniadze if !blokada_aktywna",
+#               "impossible zablokuj by domownik if drzwi_otwarte",
+#               "impossible zamknij by domownik if blokada_aktywna"
+#               ]
 # program = ["domownik zamknij", "domownik zablokuj", "zlodziej wlam"]
 # query = ["possibly pieniadze after"] #True
 
@@ -99,12 +99,12 @@ sequences = [ "initially pieniadze",
 # query = ["active zlodziej in program"] #Ture
 
 #maciek1
-fluents = ["open", "hasCard"]
-sequences = [
-            "initially !open",
-            "insertCard by bill causes open",
-            "impossible insertCard by bill if !hasCard"
-]
+# fluents = ["open", "hasCard"]
+# sequences = [
+#             "initially !open",
+#             "insertCard by bill causes open",
+#             "impossible insertCard by bill if !hasCard"
+# ]
 # program = ["bill insertCard"]
 # query = ["necessary open after program"] #False
 
@@ -115,13 +115,13 @@ sequences = [
 # query = ["realizable always"] #False
 
 #maciek2
-fluents = ["loaded", "alive"]
-sequences = [
-            "initially alive",
-            "load by bill causes loaded",
-            "shoot by bill causes !loaded",
-            "shoot by bill causes !alive if loaded"
-]
+# fluents = ["loaded", "alive"]
+# sequences = [
+#             "initially alive",
+#             "load by bill causes loaded",
+#             "shoot by bill causes !loaded",
+#             "shoot by bill causes !alive if loaded"
+# ]
 
 # program = ["bill load", "bill shoot"]
 # query = ["program realizable always"] # True
@@ -130,14 +130,14 @@ sequences = [
 # query = ["necessary !alive after program"] #True
 
 #maciek3
-fluents = ["loaded", "alive", "walking"]
-sequences = [
-            "initially loaded and walking",
-            "always !walking or alive",
-            "load by bill causes loaded",
-            "shoot by bill causes !loaded",
-            "shoot by bill causes !alive if loaded"
-]
+# fluents = ["loaded", "alive", "walking"]
+# sequences = [
+#             "initially loaded and walking",
+#             "always !walking or alive",
+#             "load by bill causes loaded",
+#             "shoot by bill causes !loaded",
+#             "shoot by bill causes !alive if loaded"
+# ]
 # program = ["bill shoot"]
 # query = ["necessary walking after program"] #False
 
@@ -146,14 +146,14 @@ sequences = [
 
 
 # maciek4
-fluents = ["loaded", "alive"]
-sequences = [
-            "initially !loaded and alive",
-            "load by bill causes loaded",
-            "shoot by bill causes !loaded",
-            "shoot by bill causes !alive if loaded",
-            "spin by bill releases !loaded if loaded"
-]
+# fluents = ["loaded", "alive"]
+# sequences = [
+#             "initially !loaded and alive",
+#             "load by bill causes loaded",
+#             "shoot by bill causes !loaded",
+#             "shoot by bill causes !alive if loaded",
+#             "spin by bill releases !loaded if loaded"
+# ]
 # program = ["bill load", "bill shoot", "bill load", "bill spin"]
 # query = ["possibly !loaded after program"] #True
 # program = ["bill load", "bill spin"]
@@ -162,12 +162,12 @@ sequences = [
 
 
 #maciek5
-fluents = ["open", "hasCard"]
-sequences = [
-            "initially !open and hasCard",
-            "insertCard by bill causes open",
-            "impossible insertCard by bill if !hasCard"
-]
+# fluents = ["open", "hasCard"]
+# sequences = [
+#             "initially !open and hasCard",
+#             "insertCard by bill causes open",
+#             "impossible insertCard by bill if !hasCard"
+# ]
 # program = ["bill insertCard"]
 # query = ["necessary open after"] # True
 
@@ -221,13 +221,13 @@ sequences = [
 
 
 # # maciek9
-fluents = ["tank_full", "car_running", "tom_has_money"]
-sequences = [
-            "initially tom_has_money",
-            "turn_on_car by Tom causes car_running if tank_full",
-            "refuel_car by Tom causes tank_full and !tom_has_money if tom_has_money",
-            "steal_money by Thief releases !tom_has_money",
-]
+# fluents = ["tank_full", "car_running", "tom_has_money"]
+# sequences = [
+#             "initially tom_has_money",
+#             "turn_on_car by Tom causes car_running if tank_full",
+#             "refuel_car by Tom causes tank_full and !tom_has_money if tom_has_money",
+#             "steal_money by Thief releases !tom_has_money",
+# ]
 # program = ["Tom refuel_car", "Tom turn_on_car"]
 # query = ["necessary !tom_has_money and car_running after program"] # True
 
@@ -259,6 +259,45 @@ sequences = [
 
 # program = ["Tom refuel_car", "Thief steal_money"]
 # query = ["realizable always"] # False TODO check 
+
+
+
+# maciek 10
+
+# fluents = ["marysia_usmiechnieta", "kwiaty_kwitna", "konewka_pelna"]
+# sequences = [
+#             "initially !konewka_pelna and !marysia_usmiechnieta",
+#             "always kwiaty_kwitna and marysia_usmiechnieta"
+#             "impossible podlewanie by ogrodnik if !konewka_pelna",
+#             "podlewanie by ogrodnik causes kwiaty_kwitna if konewka_pelna",
+#             "napelnianie by ogrodnik causes konewka_pelna if !konewka_pelna",
+# ]
+# program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
+# query = ["necessary marysia_usmiechnieta after program"] # True 25 daje false
+
+# program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
+# query = ["realizable always"] # False 26 daje true
+
+# seba2
+# fluents = ["lekcje_odrobione", "ksiazka_przeczytana"]
+# sequences = [
+#             "initially !lekcje_odrobione and !ksiazka_przeczytana",
+#             "impossible ksiazka_przeczytana by asia if !lekcje_odrobione",
+#             "czytaj_ksiazke by asia releases ksiazka_przeczytana",
+#             "odrob_lekcje by asia releases lekcje_odrobione if !lekcje_odrobione",
+# ]
+# program = ["asia odrob_lekcje", "asia czytaj_ksiazke"]
+# query = ["necessary ksiazka_przeczytana after program"] # False
+
+# program = ["asia odrob_lekcje", "asia odrob_lekcje"]
+# query = ["necessary lekcje_odrobione after program"] # False
+
+# program = ["asia odrob_lekcje", "asia odrob_lekcje"]
+# query = ["active asia after program"] # False?
+
+
+
+
 
 historical_actions =[]
 
