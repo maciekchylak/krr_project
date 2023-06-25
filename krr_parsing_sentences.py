@@ -98,20 +98,20 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 # query = ["active zlodziej in program"] #Ture
 
 # maciek1
-fluents = ["loaded", "walking", "alive"]
-sequences = [
-            "initially loaded and walking",
-            "always walking and alive",
-            "Load by bill causes loaded",
-            "Shoot by bill causes !loaded",
-            "Shoot by bill causes !alive if loaded"
-]
+# fluents = ["loaded", "walking", "alive"]
+# sequences = [
+#             "initially loaded and walking",
+#             "always walking and alive",
+#             "Load by bill causes loaded",
+#             "Shoot by bill causes !loaded",
+#             "Shoot by bill causes !alive if loaded"
+# ]
 # program = ["bill shoot"]
-# query = ["necessary walking after"]
+# query = ["necessary walking after"] #False
 
 
 program = ["bill shoot"]
-query = ["realizable always"]
+query = ["realizable always"] #True 
 
 
 historical_actions =[]
@@ -333,11 +333,6 @@ print(f"always :{statments['always']}")
 
 
 states[0] = copy.deepcopy(statments["initial_fluents"])
-
-
-
-# for tab in statments["initial_fluents"]:
-
 for f in fluents:
     new_statements = []
     for l in statments["initial_fluents"]:
@@ -352,7 +347,6 @@ for f in fluents:
             l_copy_2.append("!" + f)
             new_statements.append(l_copy_2)
     new_statements = [list(x) for x in set(tuple(sorted(x)) for x in new_statements)]        
-    # statments["initial_fluents"] = new_statements
     states[0] = new_statements
 
 print(f"states0 {states}")
@@ -372,52 +366,14 @@ for states_model in states[0]:
 states[0] = new_statements        
 
 
-
 print(f"states1 {states}")
 print(f"statments[initial_fluents] {statments['initial_fluents']}")
 
-
-
-
-
-
-# for l in statments["initial_fluents"]:
-#     print(F"l {l}")
-#     copy_fluents = copy.copy(fluents)
-#     for fluent in l:
-#         if "!" in fluent:
-#             fluent = fluent[1:]
-
-#         if fluent in copy_fluents:
-
-#             copy_fluents.remove(fluent)
-#             print(f"fcopy_fluents {copy_fluents}")
-
-#     for fluent in copy_fluents:
-#         copied_state = copy.deepcopy(states[0])
-#         states[0] = states[0] + copied_state
-#         for i in range(len(states[0])):
-#             if i<len(copied_state):
-#                 states[0][i].append(fluent)
-#             else:
-#                 states[0][i].append("!"+fluent)
-                
-
-
-# program = ["strzelec strzal","strzelec przeladowanie","strzelec strzal"]
-# program = ["domownik zamknij", "domownik zablokuj", "zlodziej wlam"]
-# program = ["domownik zamknij"]
-
+        
 parsed_program = []
 for p in program:
     a,b = p.split(" ")
     parsed_program.append((a,b))
-# query = ["necessary !kurczak_zyje after"]
-#query = ["necessary pieniadze after"]
-# query = ["possibly pieniadze after"]
-# query = ["active domownik in program"]
-#query = ["program realizable ever"]
-
 
 
 if True:
