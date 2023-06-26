@@ -1197,7 +1197,7 @@ class Ui_MainWindow(object):
             query[j] = i
 
 
-        def value_query_necessary():
+            def value_query_necessary():
                 for i,(agent, action) in enumerate(parsed_program):
                     states[i+1]=[]
                     boolean_action = False 
@@ -2016,7 +2016,8 @@ class Ui_MainWindow(object):
                     state_tab = states_model[len(states_model)-1]
                     if len(state_tab)==0:
                         return False
-                return True                      
+                return True                     
+                        
                             
 
         if "active" in query[-1]:
