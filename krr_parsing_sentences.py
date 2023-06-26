@@ -264,16 +264,16 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 
 # maciek 10
 
-# fluents = ["marysia_usmiechnieta", "kwiaty_kwitna", "konewka_pelna"]
-# sequences = [
-#             "initially !konewka_pelna and !marysia_usmiechnieta",
-#             "always kwiaty_kwitna and marysia_usmiechnieta"
-#             "impossible podlewanie by ogrodnik if !konewka_pelna",
-#             "podlewanie by ogrodnik causes kwiaty_kwitna if konewka_pelna",
-#             "napelnianie by ogrodnik causes konewka_pelna if !konewka_pelna",
-# ]
-# program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
-# query = ["necessary marysia_usmiechnieta after program"] # True 25 daje false
+fluents = ["marysia_usmiechnieta", "kwiaty_kwitna", "konewka_pelna"]
+sequences = [
+            "initially !konewka_pelna and !marysia_usmiechnieta",
+            "always kwiaty_kwitna and marysia_usmiechnieta",
+            "impossible podlewanie by ogrodnik if !konewka_pelna",
+            "podlewanie by ogrodnik causes kwiaty_kwitna if konewka_pelna",
+            "napelnianie by ogrodnik causes konewka_pelna if !konewka_pelna",
+]
+program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
+query = ["necessary marysia_usmiechnieta after program"] # True 25 daje false
 
 # program = ["ogrodnik napelnianie", "ogrodnik podlewanie"]
 # query = ["realizable always"] # False 26 daje true
@@ -302,6 +302,7 @@ statments = {"initial_fluents":[[]], #["kurczak_zyje", "strzelba_naladowana"],["
 historical_actions =[]
 
 for seq in sequences:
+    #print(seq)
     if "initially" in seq:#done
         seq = seq[len("initially")+1:]
         if "or" in seq:
@@ -485,7 +486,9 @@ for seq in sequences:
                 for i in range(len(actions_conditions_releases[(seq2,seq1)][0])):  
                     actions_conditions_releases[(seq2,seq1)][0][i].append(seq4)
     elif "always" in seq:
+        #print("in alwaus")
         seq = seq[len("always")+1:]
+        #print(f"seg always {seq}")
         if "or" in seq:
             seq1, seq2 = seq.split(" or ")
             copied = copy.deepcopy(statments["always"])

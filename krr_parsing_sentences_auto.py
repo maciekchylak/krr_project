@@ -465,24 +465,27 @@ correct_reults_test.append(False)
 
 
 
+#Dawid
+# seba2
+fluents = ["p", "q"]
+sequences = [
+            "initially p",
+            "a by b causes !p",
+            "always p"
+            
+           
+]
+program = ["b a"]
+query = ["necessary p after program"] # False
 
-# # # maciek9 test
-# fluents = ["tom_has_money"]
-# sequences = [
-#             "initially tom_has_money",
-#             "steal_money by Thief releases !tom_has_money",
-# ]
-# program = ["Tom refuel_car", "Tom turn_on_car"]
-# query = ["necessary !tom_has_money and car_running after program"] # True
+fluents_tab_test.append(fluents)
+sequences_tab_test.append(sequences)
+program_tab_test.append(program)
+query_tab_test.append(query)
+correct_reults_test.append(False)
 
-# # program = ["Thief steal_money"]
-# # query = ["possibly tom_has_money after program"] # True  TODO check 
 
-# # program = ["Tom turn_on_car", "Thief steal_money"]
-# # query = ["necessary tom_has_money after program"] # False
 
-# # program = ["Tom refuel_car", "Thief steal_money"]
-# # query = ["realizable always"] # False TODO check 
 
 results = []
 for i in range(len(fluents_tab_test)):
@@ -789,7 +792,7 @@ for i in range(len(fluents_tab_test)):
             def value_query_necessary():
                 for i,(agent, action) in enumerate(parsed_program):
                     states[i+1]=[]
-                    historical_actions.append(action)  
+                    boolean_action = False 
                     for state in states[i]:
                         boolean_always = True 
                         #impossible
@@ -817,6 +820,8 @@ for i in range(len(fluents_tab_test)):
                                 if boolean:
                                     break
                             if boolean:
+                                historical_actions.append(action)
+                                boolean_action = True 
                                 
                                 for posibility in actions_conditions[(agent,action)][1]:
                                     state_copied = copy.deepcopy(state)
@@ -862,6 +867,8 @@ for i in range(len(fluents_tab_test)):
                                 if boolean:
                                     break
                             if boolean:
+                                if not boolean_action:
+                                    historical_actions.append(action)
                                 for posibility in actions_conditions_releases[(agent,action)][1]:
                                     state_copied = copy.deepcopy(state)
                                     for postcondtion in posibility:
@@ -940,12 +947,14 @@ for i in range(len(fluents_tab_test)):
 
             def value_query_possibly():
                 states_models = []
+                
+                    
                 for state in states[0]:
                     states_models.append({0:[state]})
                 for i,(agent, action) in enumerate(parsed_program):
+                    boolean_action = False
                     for states_model in states_models:
-                        states_model[i+1]=[]
-                    historical_actions.append(action)  
+                        states_model[i+1]=[] 
                     for states_model in states_models:
                         for state in states_model[i]:
                             boolean_always = True
@@ -974,7 +983,8 @@ for i in range(len(fluents_tab_test)):
                                         break
                                 print(f"boolean {boolean}")    
                                 if boolean:
-                                    
+                                    historical_actions.append(action)
+                                    boolean_action = True
                                     for posibility in actions_conditions[(agent,action)][1]:
                                         state_copied = copy.deepcopy(state)
                                         print(f"posibility {posibility}")
@@ -1024,7 +1034,8 @@ for i in range(len(fluents_tab_test)):
                                     if boolean:
                                         break
                                 if boolean:
-                                    
+                                    if not boolean_action:
+                                        historical_actions.append(action)
                                     for posibility in actions_conditions_releases[(agent,action)][1]:
                                         state_copied = copy.deepcopy(state)
                                         for postcondtion in posibility:
@@ -1061,6 +1072,8 @@ for i in range(len(fluents_tab_test)):
 
                     for states_model in states_models: #remve the same states in model                         
                         states_model[i+1] = [list(x) for x in set(tuple(x) for x in states_model[i+1])]  
+
+                    print(states_model)
                     for k in after_sequences.keys():
                         n = len(k)
                         last_n_actions = historical_actions[-n:]
@@ -1073,8 +1086,9 @@ for i in range(len(fluents_tab_test)):
                                     for formula in formulas:
                                         for fluent in formula:
                                             if fluent in state_copied:
+                                                state_new.append(state_copied)
                                                 continue
-                                            elif "!" in postcondtion:
+                                            elif "!" in fluent:
                                                 state_copied.remove(fluent[1:])
                                                 state_copied.append(fluent)
                                                 state_new.append(state_copied)
@@ -1148,6 +1162,8 @@ for i in range(len(fluents_tab_test)):
                                     
                                     
             def activity_query():
+                
+                                  
                 formula_agent = query[0].split("active ")[1].split(" in ")[0]
                 boolean_agent = False
                 for (agent, action) in parsed_program:
@@ -1156,8 +1172,8 @@ for i in range(len(fluents_tab_test)):
                 if not  boolean_agent:
                     return False        
                 for i,(agent, action) in enumerate(parsed_program):
-                    states[i+1]=[]
-                    historical_actions.append(action)  
+                    boolean_action = False
+                    states[i+1]=[] 
                     for state in states[i]:
                         boolean_always = True
                         #impossible
@@ -1186,6 +1202,8 @@ for i in range(len(fluents_tab_test)):
                                 if boolean:
                                     break
                             if boolean:
+                                historical_actions.append(action)
+                                boolean_action = True
                                 for posibility in actions_conditions[(agent,action)][1]:
                                     state_copied = copy.deepcopy(state)
                                     for postcondtion in posibility:
@@ -1245,7 +1263,8 @@ for i in range(len(fluents_tab_test)):
                                 if boolean:
                                     break
                             if boolean:
-                                
+                                if not boolean_action:
+                                    historical_actions.append(action)
                                 for posibility in actions_conditions_releases[(agent,action)][1]:
                                     state_copied = copy.deepcopy(state)
                                     for postcondtion in posibility:
@@ -1301,9 +1320,12 @@ for i in range(len(fluents_tab_test)):
                             
 
             def realizability_query_always():
+                
+                                
                 for i,(agent, action) in enumerate(parsed_program):
                     states[i+1]=[]
-                    historical_actions.append(action)  
+                    boolean_action = False
+
                     for state in states[i]:
                         boolean_always  = True
                         #impossible
@@ -1331,7 +1353,8 @@ for i in range(len(fluents_tab_test)):
                                 if boolean:
                                     break
                             if boolean:
-                                
+                                historical_actions.append(action)
+                                boolean_action = True
                                 for posibility in actions_conditions[(agent,action)][1]:
                                     state_copied = copy.deepcopy(state)
                                     for postcondtion in posibility:
@@ -1378,7 +1401,8 @@ for i in range(len(fluents_tab_test)):
                                 if boolean:
                                     break
                             if boolean:
-                                
+                                if not boolean_action:
+                                    historical_actions.append(action)
                                 for posibility in actions_conditions_releases[(agent,action)][1]:
                                     state_copied = copy.deepcopy(state)
                                     for postcondtion in posibility:
@@ -1440,13 +1464,15 @@ for i in range(len(fluents_tab_test)):
 
 
             def realizability_query_ever():
+                
+                    
                 states_models = []
                 for state in states[0]:
                     states_models.append({0:[state]})
                 for i,(agent, action) in enumerate(parsed_program):
+                    boolean_action = False
                     for states_model in states_models:
                         states_model[i+1]=[]
-                    historical_actions.append(action)  
                     for states_model in states_models:
                         for state in states_model[i]:
                             boolean_always = True 
@@ -1474,7 +1500,8 @@ for i in range(len(fluents_tab_test)):
                                     if boolean:
                                         break
                                 if boolean:
-                                    
+                                    boolean_action = True
+                                    historical_actions.append(action)
                                     for posibility in actions_conditions[(agent,action)][1]:
                                         state_copied = copy.deepcopy(state)
                                         for postcondtion in posibility:
@@ -1519,6 +1546,8 @@ for i in range(len(fluents_tab_test)):
                                     if boolean:
                                         break
                                 if boolean:
+                                    if not boolean_action:
+                                        historical_actions.append(action)
                                     for posibility in actions_conditions_releases[(agent,action)][1]:
                                         state_copied = copy.deepcopy(state)
                                         for postcondtion in posibility:
